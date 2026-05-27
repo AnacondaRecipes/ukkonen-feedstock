@@ -1,50 +1,50 @@
 {% set name = "ukkonen" %}
-{% set version = "1.0.1" %}
-{% set sha256 = "5f3fd0e9c1b2a7ea669382ec3928370f11882cec991c4d3757955b56d18895f6" %}
+{% set version = "1.1.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/asottile/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: fc62ce0a5b5d57198d4dc0c6ebca406b41afca2b6681af5159a6709b47286377
 
 build:
-  number: 1
-  skip: True  # [py<37]
-  script: "{{ PYTHON }} -m pip install . -vv"
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: true  # [py<310]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
   host:
-    - python
-    - setuptools
     - pip
-    - cffi >=1
+    - python
     - wheel
+    - setuptools
+    - cffi >=1
   run:
     - python
     - cffi >=1
 
 test:
+  imports:
+    - ukkonen
   requires:
     - pip
-  imports:
-    - {{ name }}
   commands:
     - pip check
 
 about:
-  home: https://github.com/asottile/{{ name }}
+  home: https://github.com/asottile/ukkonen
   license: MIT
   license_family: MIT
   license_file: LICENSE
   summary: Implementation of bounded Levenshtein distance (Ukkonen).
   description: Implementation of bounded Levenshtein distance (Ukkonen).
-  doc_url: https://github.com/asottile/{{ name }}
-  dev_url: https://github.com/asottile/{{ name }}
+  doc_url: https://github.com/asottile/ukkonen
+  dev_url: https://github.com/asottile/ukkonen
 
 extra:
   recipe-maintainers:
